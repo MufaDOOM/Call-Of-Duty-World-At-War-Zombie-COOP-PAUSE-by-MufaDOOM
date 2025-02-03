@@ -28,6 +28,8 @@ onPlayerSpawned()
 		{
 			self.initial_spawn = 0;
 			self thread watch_for_respawn();
+			self iprintlnbold("COOP PAUSE Activated , Enjoy :)");
+			self iprintln( "[{+speed_throw}] ^1& [{+melee}] ^6To Pause" );
 			self coop_pause();
 		}
 	}
@@ -60,10 +62,14 @@ coop_pause()
 
 	while(players.size > 0)
 	{
+if( self meleebuttonpressed() && self adsbuttonpressed() )	
+{
+setDvar( "coop_pause", 1 );
+}
 		if( getDvarInt( "coop_pause" ) == 1 )
 		{	
 			
-	
+			self iprintln( "[{+speed_throw}] ^1& [{+melee}] ^6To Unpause" );
 			players[0] SetClientDvar( "ai_disableSpawn", "1" );
 			players[0] SetClientDvar( "g_ai", "0" );
 
@@ -120,8 +126,10 @@ coop_pause()
 				current_time = int(getTime() / 1000);
 				current_paused_time = current_time - paused_start_time;
 				level.paused_time = previous_paused_time + current_paused_time;
-
-
+if( self meleebuttonpressed() && self adsbuttonpressed() )	
+{
+setDvar( "coop_pause", 0 );
+}
 
 				if( getDvarInt( "coop_pause" ) == 0 )
 				{
